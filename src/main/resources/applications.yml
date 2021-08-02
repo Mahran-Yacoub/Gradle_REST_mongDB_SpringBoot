@@ -7,9 +7,3 @@ spring:
       database: test
       host: localhost
       port: 27017
-
-
-auth:
-  expiration: 604800
-  secret: todoAPISecret1234
-  header: Authorization

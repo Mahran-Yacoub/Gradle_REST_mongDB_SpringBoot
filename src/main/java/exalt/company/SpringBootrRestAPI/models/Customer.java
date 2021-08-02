@@ -1,4 +1,4 @@
-package com.example.SpringBootrRestAPI.models;
+package exalt.company.SpringBootrRestAPI.models;
 
 
 import org.springframework.data.annotation.Id;

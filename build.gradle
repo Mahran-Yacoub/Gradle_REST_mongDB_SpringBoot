@@ -4,16 +4,18 @@ plugins {
 	id 'java'
 }
 
-group = 'com.example'
+group = 'exalt.company'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 repositories {
 	mavenCentral()
 }
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

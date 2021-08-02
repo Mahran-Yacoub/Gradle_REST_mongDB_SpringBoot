@@ -1,4 +1,4 @@
-package com.example.SpringBootrRestAPI;
+package exalt.company.SpringBootrRestAPI;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

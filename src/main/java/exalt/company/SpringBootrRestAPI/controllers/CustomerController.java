@@ -1,7 +1,7 @@
-package com.example.SpringBootrRestAPI.controllers;
+package exalt.company.SpringBootrRestAPI.controllers;
 
-import com.example.SpringBootrRestAPI.models.Customer;
-import com.example.SpringBootrRestAPI.repo.Repository;
+import exalt.company.SpringBootrRestAPI.models.Customer;
+import exalt.company.SpringBootrRestAPI.repo.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
@@ -16,10 +16,10 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/customer")
-public class Controller {
+public class CustomerController {
 
     @Autowired
-    Repository repositoryDB;
+    CustomerRepository customerRepositoryDB;
 
     /**
      * This Method will receive GET Request as
@@ -29,7 +29,7 @@ public class Controller {
      */
     @GetMapping("/all")
     public List<Customer> getCustomers() {
-        return repositoryDB.findAll();
+        return customerRepositoryDB.findAll();
     }
 
 
@@ -44,12 +44,12 @@ public class Controller {
     @GetMapping("/{id}")
     public ResponseEntity<Customer> getCustomerDetails(@PathVariable Integer id) {
 
-        if (!repositoryDB.existsById(id)) {
+        if (!customerRepositoryDB.existsById(id)) {
             ResponseEntity<Customer> notFoundResponse = new ResponseEntity<Customer>(HttpStatus.NOT_FOUND);
             return notFoundResponse;
         }
 
-        Customer customer = repositoryDB.findById(id).get();
+        Customer customer = customerRepositoryDB.findById(id).get();
         ResponseEntity<Customer> successResponse = new ResponseEntity<Customer>(customer, HttpStatus.FOUND);
         return successResponse;
     }
@@ -66,10 +66,10 @@ public class Controller {
     public ResponseEntity<Customer> createNewCustomer(@RequestBody Customer customer) {
 
         int id = customer.getId() ;
-        if (repositoryDB.existsById(id)) {
+        if (customerRepositoryDB.existsById(id)) {
             return new ResponseEntity<Customer>(HttpStatus.CONFLICT);
         }
-        repositoryDB.insert(customer);
+        customerRepositoryDB.insert(customer);
         return new ResponseEntity<Customer>(customer, HttpStatus.OK);
     }
 
@@ -87,7 +87,7 @@ public class Controller {
     public ResponseEntity<Customer> updateExistCustomer(@RequestBody Customer customer, @PathVariable Integer id) {
 
         try {
-            repositoryDB.save(customer);
+            customerRepositoryDB.save(customer);
             return new ResponseEntity<Customer>(customer, HttpStatus.OK);
 
         } catch (InvalidDataAccessApiUsageException e) {
@@ -109,14 +109,14 @@ public class Controller {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Customer> deleteCustomer(@PathVariable Integer id) {
 
-        if (!repositoryDB.existsById(id)) {
+        if (!customerRepositoryDB.existsById(id)) {
 
-            repositoryDB.deleteById(id);
+            customerRepositoryDB.deleteById(id);
             return new ResponseEntity<Customer>(HttpStatus.NOT_FOUND);
         }
 
-        Customer deletedCustomer = repositoryDB.findById(id).get();
-        repositoryDB.deleteById(id);
+        Customer deletedCustomer = customerRepositoryDB.findById(id).get();
+        customerRepositoryDB.deleteById(id);
         return new ResponseEntity<Customer>(deletedCustomer ,HttpStatus.OK);
     }
 

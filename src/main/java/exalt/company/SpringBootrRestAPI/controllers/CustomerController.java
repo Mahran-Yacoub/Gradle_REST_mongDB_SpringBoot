@@ -18,8 +18,14 @@ import java.util.List;
 @RequestMapping("/customer")
 public class CustomerController {
 
-    @Autowired
+
     CustomerRepository customerRepositoryDB;
+
+    @Autowired
+    public CustomerController(CustomerRepository customerRepository) {
+
+        this.customerRepositoryDB = customerRepository;
+    }
 
     /**
      * This Method will receive GET Request as
@@ -65,11 +71,11 @@ public class CustomerController {
     @PostMapping(value = "/create")
     public ResponseEntity<Customer> createNewCustomer(@RequestBody Customer customer) {
 
-        int id = customer.getId() ;
+        int id = customer.getId();
         if (customerRepositoryDB.existsById(id)) {
             return new ResponseEntity<Customer>(HttpStatus.CONFLICT);
         }
-        customerRepositoryDB.insert(customer);
+        customerRepositoryDB.save(customer);
         return new ResponseEntity<Customer>(customer, HttpStatus.OK);
     }
 
@@ -84,16 +90,20 @@ public class CustomerController {
      * NOT_FOUND (404) if its failed since we do not have id enter in Customer Object
      */
     @PatchMapping("/update/{id}")
-    public ResponseEntity<Customer> updateExistCustomer(@RequestBody Customer customer, @PathVariable Integer id) {
+    public ResponseEntity updateExistCustomer(@RequestBody Customer customer
+            , @PathVariable Integer id) {
 
-        try {
+        if (customerRepositoryDB.existsById(id)) {
+
+            customer.setId(id);
             customerRepositoryDB.save(customer);
-            return new ResponseEntity<Customer>(customer, HttpStatus.OK);
+            return ResponseEntity.ok().build();
 
-        } catch (InvalidDataAccessApiUsageException e) {
+        } else {
 
-            return new ResponseEntity<Customer>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
+
     }
 
 
@@ -102,7 +112,6 @@ public class CustomerController {
      * as http://localhost:8080/customer/delete/1
      *
      * @param id The ID of Customer that we need to delete his details
-     *
      * @return Response That either OK (200) if A Customer deleted with deleted Customer Details
      * Or NOT FOUND (404) if A Customer is Already Not Exist.
      */
@@ -111,13 +120,12 @@ public class CustomerController {
 
         if (!customerRepositoryDB.existsById(id)) {
 
-            customerRepositoryDB.deleteById(id);
             return new ResponseEntity<Customer>(HttpStatus.NOT_FOUND);
         }
 
         Customer deletedCustomer = customerRepositoryDB.findById(id).get();
         customerRepositoryDB.deleteById(id);
-        return new ResponseEntity<Customer>(deletedCustomer ,HttpStatus.OK);
+        return new ResponseEntity<Customer>(deletedCustomer, HttpStatus.OK);
     }
 
 }

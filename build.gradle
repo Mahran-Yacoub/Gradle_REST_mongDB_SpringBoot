@@ -13,9 +13,11 @@ repositories {
 }
 
 dependencies {
+
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+	testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.6.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
